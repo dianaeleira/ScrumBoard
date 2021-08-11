@@ -1,9 +1,9 @@
 const Role = require("../models/role");
 const registerRole = async (req, res) => {
-    if(!req.body.name || !req.body.description) 
+    if (!req.body.name || !req.body.description)
         return res.status(401).send("Process failed: Incomplete data.");
 
-    const existingRole = await Role.findOne({name: req.body.name});
+    const existingRole = await Role.findOne({ name: req.body.name });
     if (existingRole) return res.status(401).send("Process failed: role already exists");
 
     const role = new Role({
@@ -13,14 +13,14 @@ const registerRole = async (req, res) => {
     });
 
     const result = await role.save();
-    if(!result) return res.status(401).send("Failed to register role.")
-    return res.status(200).send({role})
+    if (!result) return res.status(401).send("Failed to register role.")
+    return res.status(200).send({ role })
 };
 
-const listRole=async(req, res) =>{
+const listRole = async (req, res) => {
     const role = await Role.find()
-    if(!role) return res.status(401).send("No role.");
-    return res.status("200").send({role});
+    if (!role || role.length === 0) return res.status(401).send("No role.");
+    return res.status("200").send({ role });
 };
 
-module.exports={registerRole, listRole}
+module.exports = { registerRole, listRole }
